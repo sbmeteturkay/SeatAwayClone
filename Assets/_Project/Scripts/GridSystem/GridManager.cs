@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SMTD.GridSystem
@@ -9,46 +9,54 @@ namespace SMTD.GridSystem
         [SerializeField] SpriteRenderer gridRenderer;
         [SerializeField] Grid grid;
         [SerializeField] GridInput gridInput;
-        [SerializeField] private GameObject testObject;
-        private bool _objectSelected;
+        [SerializeField] List<GridObject> gridObjects;
         private void Start()
         {
             gridInput.GridInputDown += GridInputGridInputDown;
             gridInput.GridInputCancelled += GridInputOnGridInputCancelled;
+            foreach (var gridObject in gridObjects)
+            {
+                gridObject.Init(grid,gridInput);
+            }
         }
 
         private void OnDestroy()
         {
             gridInput.GridInputDown -= GridInputGridInputDown;
             gridInput.GridInputCancelled -= GridInputOnGridInputCancelled;
-            
         }
 
         private void Update()
         {
-            if (_objectSelected)
+            foreach (var gridObject in gridObjects)
             {
-                var selectedMapPosition = gridInput.GetSelectedMapPosition();
-                Vector3Int cellPosition = grid.WorldToCell(selectedMapPosition);
-                testObject.transform.position = new Vector3(selectedMapPosition.x,grid.GetCellCenterWorld(cellPosition).y+.5f,selectedMapPosition.z);
+                if (gridObject.selected)
+                {
+                    gridObject.OnMove();
+                }
             }
         }
 
         private void GridInputGridInputDown()
         {
+            var inputDownCellPosition = grid.GetCellCenterWorld(grid.WorldToCell(gridInput.GetInputMapPosition()));
             //check if clicked position has object 
-            if (true)
+            foreach (var gridObject in gridObjects)
             {
-                _objectSelected = true;
+                if (gridObject.transform.position != inputDownCellPosition) continue;
+                gridObject.OnSelected();
+                break;
             }
-           
         }
         private void GridInputOnGridInputCancelled()
         {
-            _objectSelected = false;
-            var selectedMapPosition = gridInput.GetSelectedMapPosition();
-            Vector3Int cellPosition = grid.WorldToCell(selectedMapPosition);
-            testObject.transform.position = grid.GetCellCenterWorld(cellPosition);
+            foreach (var gridObject in gridObjects)
+            {
+                if (gridObject.selected)
+                {
+                    gridObject.OnDrop();
+                }
+            }
         }
 
 

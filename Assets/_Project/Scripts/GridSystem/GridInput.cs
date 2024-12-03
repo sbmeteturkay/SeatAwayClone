@@ -12,7 +12,7 @@ namespace SMTD.GridSystem
         public event Action GridInputDown;
         public event Action GridInputCancelled;
 
-        public Vector3 GetSelectedMapPosition()
+        public Vector3 GetInputMapPosition()
         {
             var mousePosition = Input.mousePosition;
             mousePosition.z = sceneCamera.nearClipPlane;
