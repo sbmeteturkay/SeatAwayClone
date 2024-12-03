@@ -10,13 +10,14 @@ namespace SMTD.GridSystem
         [SerializeField] Grid grid;
         [SerializeField] GridInput gridInput;
         [SerializeField] List<GridObject> gridObjects;
+        [SerializeField] Vector2 gridSize;
         private void Start()
         {
             gridInput.GridInputDown += GridInputGridInputDown;
             gridInput.GridInputCancelled += GridInputOnGridInputCancelled;
             foreach (var gridObject in gridObjects)
             {
-                gridObject.Init(grid,gridInput);
+                gridObject.Init(grid,gridInput,gridSize);
             }
         }
 
@@ -32,7 +33,7 @@ namespace SMTD.GridSystem
             {
                 if (gridObject.selected)
                 {
-                    gridObject.OnMove();
+                    gridObject.OnMove(CanGridObjectMoveUp(gridObject), CanGridObjectMoveDown(gridObject));
                 }
             }
         }
@@ -59,12 +60,20 @@ namespace SMTD.GridSystem
             }
         }
 
-
-
         private void SetGridRendererSize(Vector2 tile)
         {
             gridRenderer.size = tile;
         }
-        
+
+        private bool CanGridObjectMoveUp(GridObject checkGridObject)
+        {
+            var currentGridPosition=grid.WorldToCell(checkGridObject.transform.position);
+            return currentGridPosition.y<(gridSize.y/2);
+        }
+        private bool CanGridObjectMoveDown(GridObject checkGridObject)
+        {
+            var currentGridPosition=grid.WorldToCell(checkGridObject.transform.position);
+            return currentGridPosition.y>-(gridSize.y/2);
+        }
     }
 }
