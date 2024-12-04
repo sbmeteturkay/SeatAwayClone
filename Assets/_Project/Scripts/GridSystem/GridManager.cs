@@ -11,6 +11,7 @@ namespace SMTD.GridSystem
         [SerializeField] GridInput gridInput;
         [SerializeField] List<GridObject> gridObjects;
         [SerializeField] Vector2 gridSize;
+        GridObject _selectedGridObject;
         private void Start()
         {
             gridInput.GridInputDown += GridInputGridInputDown;
@@ -29,13 +30,7 @@ namespace SMTD.GridSystem
 
         private void Update()
         {
-            foreach (var gridObject in gridObjects)
-            {
-                if (gridObject.selected)
-                {
-                    gridObject.OnMove(CanGridObjectMoveUp(gridObject), CanGridObjectMoveDown(gridObject));
-                }
-            }
+            _selectedGridObject?.OnMove(CanGridObjectMoveInDirection());
         }
 
         private void GridInputGridInputDown()
@@ -45,35 +40,56 @@ namespace SMTD.GridSystem
             foreach (var gridObject in gridObjects)
             {
                 if (gridObject.transform.position != inputDownCellPosition) continue;
+                _selectedGridObject = gridObject;
                 gridObject.OnSelected();
                 break;
             }
         }
         private void GridInputOnGridInputCancelled()
         {
-            foreach (var gridObject in gridObjects)
-            {
-                if (gridObject.selected)
-                {
-                    gridObject.OnDrop();
-                }
-            }
+            _selectedGridObject?.OnDrop();
+            _selectedGridObject=null;
         }
 
         private void SetGridRendererSize(Vector2 tile)
         {
             gridRenderer.size = tile;
         }
+        private MovementOptions CanGridObjectMoveInDirection()
+        {
+            // Hedef pozisyonu hesapla
+            var currentGridPosition = grid.WorldToCell(_selectedGridObject.transform.position);
+            
+            var onTopCell = currentGridPosition.y+2>(gridSize.y/2);
+            var onBottomCell = currentGridPosition.y-1<-(gridSize.y/2);
+            
+            var onFarRightCell = currentGridPosition.x+2>(gridSize.x/2);
+            var onFarLeftCell = currentGridPosition.x-1<-(gridSize.x/2);
 
-        private bool CanGridObjectMoveUp(GridObject checkGridObject)
-        {
-            var currentGridPosition=grid.WorldToCell(checkGridObject.transform.position);
-            return currentGridPosition.y<(gridSize.y/2);
-        }
-        private bool CanGridObjectMoveDown(GridObject checkGridObject)
-        {
-            var currentGridPosition=grid.WorldToCell(checkGridObject.transform.position);
-            return currentGridPosition.y>-(gridSize.y/2);
+            var leftGrid =  currentGridPosition+ Vector3Int.left;
+            var rightGrid =  currentGridPosition+ Vector3Int.right;
+            var upGrid =  currentGridPosition+ Vector3Int.up;
+            var downGrid =  currentGridPosition+ Vector3Int.down;
+            
+            var leftCellOccupied = false;
+            var rightCellOccupied = false;
+            var upCellOccupied = false;
+            var downCellOccupied = false;
+            foreach (var gridObject in gridObjects)
+            {
+                leftCellOccupied = leftCellOccupied||grid.WorldToCell(gridObject.transform.position) == leftGrid;
+                rightCellOccupied = rightCellOccupied||grid.WorldToCell(gridObject.transform.position) == rightGrid;
+                upCellOccupied = upCellOccupied||grid.WorldToCell(gridObject.transform.position) == upGrid;
+                downCellOccupied = downCellOccupied||grid.WorldToCell(gridObject.transform.position) == downGrid;
+            }
+
+            return new MovementOptions(
+                    !onFarLeftCell && !leftCellOccupied,
+                    !onFarRightCell && !rightCellOccupied,
+                    !onTopCell && !upCellOccupied,
+                    !onBottomCell && !downCellOccupied
+                );
+
         }
     }
 }

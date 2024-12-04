@@ -32,38 +32,34 @@ namespace SMTD.GridSystem
             _pickedAnimation.Play();
         }
 
-        public void OnMove( bool canMoveLeft=true, bool canMoveRight=true)
+        public void OnMove( MovementOptions movementOptions)
         {
             //ray hit position
             var inputPosition = _gridInput.GetInputMapPosition();
-            
-            //world position of ray hit cell
-            var cellPosition= _grid.GetCellCenterWorld(_grid.WorldToCell(inputPosition));
             
             //this objects cell position
             var objectsCellPosition=_grid.WorldToCell(transform.position);
 
             //to check if object inside grid
-            var onTopCell = objectsCellPosition.y+2>(_gridSize.y/2);
-            var onBottomCell = objectsCellPosition.y-1<-(_gridSize.y/2);
-            var onFarRightCell = objectsCellPosition.x+2>(_gridSize.x/2);
-            var onFarLeftCell = objectsCellPosition.x-1<-(_gridSize.x/2);
 
-            var targetX = onFarRightCell &&
-                          //is trying to move right
-                          inputPosition.x > objectsCellPosition.x
-                ?
-                //set far right x
-                _grid.CellToWorld(objectsCellPosition).x + .6f
-                : onFarLeftCell && 
-                  //is trying to move left
-                  inputPosition.x < objectsCellPosition.x
-                    //set far right x
-                    ? _grid.CellToWorld(objectsCellPosition).x + .6f
+            var isTryingToMoveLeft=inputPosition.x < objectsCellPosition.x;
+            var isTryingToMoveRight=inputPosition.x > objectsCellPosition.x;
+            var isTryingToMoveUp=inputPosition.z>objectsCellPosition.y;
+            var isTryingToMoveDown=inputPosition.z<objectsCellPosition.y;
+            
+            var targetX = 
+                !movementOptions.CanMoveRight && isTryingToMoveRight ?_grid.CellToWorld(objectsCellPosition).x + .6f
+                :
+                !movementOptions.CanMoveLeft && isTryingToMoveLeft ? _grid.CellToWorld(objectsCellPosition).x + .6f
                     //if not on edges, set input position
                     : inputPosition.x;
             
-            var targetZ = onTopCell&&inputPosition.z>objectsCellPosition.y?_grid.CellToWorld(objectsCellPosition).z+.6f: onBottomCell&&inputPosition.z<objectsCellPosition.y? _grid.CellToWorld(objectsCellPosition).z+.6f:inputPosition.z;
+            var targetZ =
+                !movementOptions.CanMoveUp && isTryingToMoveUp?_grid.CellToWorld(objectsCellPosition).z+.6f
+                : 
+                !movementOptions.CanMoveDown && isTryingToMoveDown? _grid.CellToWorld(objectsCellPosition).z+.6f
+                    //if not on edges, set input position
+                : inputPosition.z;
             
             var movablePosition = new Vector3(targetX, _lastTargetPosition.y + 0.1f, targetZ);
 
@@ -72,5 +68,20 @@ namespace SMTD.GridSystem
             _lastTargetPosition = _grid.GetCellCenterWorld(_grid.WorldToCell(movablePosition));
         }
         
+    }
+    public struct MovementOptions
+    {
+        public bool CanMoveLeft;
+        public bool CanMoveRight;
+        public bool CanMoveUp;
+        public bool CanMoveDown;
+
+        public MovementOptions(bool canMoveLeft, bool canMoveRight, bool canMoveUp, bool canMoveDown)
+        {
+            CanMoveLeft = canMoveLeft;
+            CanMoveRight = canMoveRight;
+            CanMoveUp = canMoveUp;
+            CanMoveDown = canMoveDown;
+        }
     }
 }
