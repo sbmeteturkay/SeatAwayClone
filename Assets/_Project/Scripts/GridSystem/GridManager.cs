@@ -14,14 +14,13 @@ namespace SMTD.GridSystem
         
         private Vector2Int _gridSize;
         private IDraggable _selectedGridObject;
-        private bool ShouldSnapX => (int)_gridSize.x % 2 == 1;
-        private bool ShouldSnapY => (int)_gridSize.y % 2 == 1;
         
         private Dictionary<Vector3Int, GridCell> cells = new Dictionary<Vector3Int, GridCell>();
         
         //TODO: to be initialized from level builder
         [SerializeField] List<GridObject> gridObjects;
-
+        public Vector2Int GridSize => _gridSize;
+        public static event Action<IDraggable> OnDragObjectMoved;
         #region MonoBehaviour
         private void Start()
         {
@@ -53,14 +52,26 @@ namespace SMTD.GridSystem
             {
                 if (gridObject.transform.position != inputDownCellPosition) continue;
                 _selectedGridObject = gridObject;
+                _selectedGridObject.OnGridChange+= SelectedGridObjectOnOnGridChange;
                 gridObject.OnPick();
                 break;
             }
         }
+
+        private void SelectedGridObjectOnOnGridChange()
+        {
+            OnDragObjectMoved?.Invoke(_selectedGridObject);
+        }
+
         private void GridInputOnGridInputCancelled()
         {
-            _selectedGridObject?.OnRelease();
-            _selectedGridObject=null;
+            if (_selectedGridObject != null)
+            {
+                _selectedGridObject?.OnRelease();
+                _selectedGridObject.OnGridChange -= SelectedGridObjectOnOnGridChange;
+                _selectedGridObject=null;
+            }
+
         }
 
         #endregion
@@ -75,30 +86,17 @@ namespace SMTD.GridSystem
             {
                 gridObject.Init(grid,gridInput);
             }
-            // GridCell startCell =GetCell(new Vector3Int((int)_gridSize.x - 1, 0, (int)gridSize.y - 1)); // Sağ üst hücre
-            // GridCell targetCell = GetCell(new Vector3Int(-(int)_gridSize.x+1 , 0, -(int)gridSize.y + 1)); // Sol alt hücre
-            //
-            // List<GridCell> path = PathFinder.FindPath(startCell, targetCell, this);
-            //
-            // if (path != null)
-            // {
-            //     StartCoroutine(FollowPath(path));
-            // }
-            // else
-            // {
-            //     Debug.Log("Yol bulunamadı!");
-            // }
         }
 
-        private IEnumerator FollowPath(List<GridCell> path)
+        public IEnumerator FollowPath(List<GridCell> path,GameObject target)
         {
             foreach (var cell in path)
             {
-                Vector3 targetPosition = new Vector3(cell.WorldPosition.x, 0, cell.WorldPosition.y);
-                while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
+                Vector3 targetPosition = new Vector3(cell.WorldPosition.x+grid.cellSize.x/2, 0, cell.WorldPosition.z+grid.cellSize.y/2);
+                while (Vector3.Distance(target.transform.position, targetPosition) > 0.1f)
                 {
-                    gridObjects[0].transform.position =
-                        Vector3.MoveTowards(transform.position, targetPosition, 2 * Time.deltaTime);
+                   target.transform.position =
+                        Vector3.MoveTowards(target.transform.position, targetPosition, 4f * Time.deltaTime);
                     yield return null;
                 }
             }
@@ -110,9 +108,8 @@ namespace SMTD.GridSystem
             {
                 for (int z = 0; z < _gridSize.y; z++)
                 {
-                    Vector3Int cellPosition = new Vector3Int(x, 0, z);
+                    Vector3Int cellPosition = new Vector3Int(x, z, 0);
                     Vector3 worldPosition = grid.CellToWorld(cellPosition);
-
                     GridCell cell = new GridCell
                     {
                         CellPosition = cellPosition,
@@ -135,9 +132,9 @@ namespace SMTD.GridSystem
             gridRenderer.transform.localScale = new Vector3(grid.cellSize.x, grid.cellSize.y, 1);
             //fit grid render to grid components grid tiles
             gridRenderer.transform.position = new Vector3(
-                gridRenderer.transform.position.x + ((size.x / 2)*grid.cellSize.x), // +(ShouldSnapX?grid.cellSize.x/2:0),
+                gridRenderer.transform.position.x + ((size.x / 2)*grid.cellSize.x),
                 gridRenderer.transform.position.y,
-                gridRenderer.transform.position.z + (size.y / 2)*grid.cellSize.y); //+(ShouldSnapY?grid.cellSize.y/2:0));
+                gridRenderer.transform.position.z + (size.y / 2)*grid.cellSize.y);;
         }
         private MovementLimitations CheckGridObjectMovementLimitations()
         {

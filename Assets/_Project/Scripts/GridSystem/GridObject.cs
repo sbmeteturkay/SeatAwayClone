@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 
@@ -8,8 +9,10 @@ namespace SMTD.GridSystem
         private Grid _grid;
         private GridInput _gridInput;
         private MovementLimitations _movementLimitations;
-        private Vector3 _lastTargetPosition;
+        private Vector3 _lastInteractedCellPosition;
+        private Vector3 _currentCellPosition;
         private Tween _pickedAnimation;
+        public event Action OnGridChange;
         public void Init(Grid grid,GridInput input)
         {
             _grid = grid;
@@ -24,12 +27,16 @@ namespace SMTD.GridSystem
         #region IDraggable implementation
         public void OnRelease()
         {
-            transform.DOMove(_lastTargetPosition,.2f);
+            if(_currentCellPosition!=_lastInteractedCellPosition)
+                OnGridChange?.Invoke();
+            transform.DOMove(_lastInteractedCellPosition,.2f);
+            _currentCellPosition = _lastInteractedCellPosition;
             _pickedAnimation.Pause();
         }
 
         public void OnPick()
         {
+            _currentCellPosition=transform.position;;
             _pickedAnimation.Play();
         }
 
@@ -60,15 +67,17 @@ namespace SMTD.GridSystem
                     //if not on edges, set input position
                 : inputPosition.z;
             
-            var movablePosition = new Vector3(targetX, _lastTargetPosition.y + 0.1f, targetZ);
+            var movablePosition = new Vector3(targetX, _lastInteractedCellPosition.y + 0.1f, targetZ);
 
             transform.position = Vector3.MoveTowards(transform.position, movablePosition, Time.deltaTime * 20);
-            _lastTargetPosition = _grid.GetCellCenterWorld(_grid.WorldToCell(movablePosition));
+            _lastInteractedCellPosition = _grid.GetCellCenterWorld(_grid.WorldToCell(movablePosition));
         }
         public void SetMovementLimitations(MovementLimitations movementLimitations)
         {
             _movementLimitations = movementLimitations;
         }
+
+
         public Vector3Int CurrentGridPosition()
         {
             return _grid.WorldToCell(transform.position);
