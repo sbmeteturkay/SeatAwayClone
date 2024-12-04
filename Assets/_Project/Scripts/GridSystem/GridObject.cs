@@ -40,13 +40,11 @@ namespace SMTD.GridSystem
             
             //this objects cell position
             var objectsCellPosition=_grid.WorldToCell(transform.position);
-            Debug.Log(objectsCellPosition.x);
-            //to check if object inside grid
 
-            var isTryingToMoveLeft=inputPosition.x < objectsCellPosition.x;
-            var isTryingToMoveRight=inputPosition.x > objectsCellPosition.x;
-            var isTryingToMoveUp=inputPosition.z>objectsCellPosition.y;
-            var isTryingToMoveDown=inputPosition.z<objectsCellPosition.y;
+            var isTryingToMoveLeft = inputPosition.x < transform.position.x;
+            var isTryingToMoveRight = inputPosition.x > transform.position.x;
+            var isTryingToMoveUp = inputPosition.z>transform.position.z;
+            var isTryingToMoveDown = inputPosition.z<transform.position.z;
             
             var targetX = 
                 !_movementLimitations.CanMoveRight && isTryingToMoveRight ?_grid.CellToWorld(objectsCellPosition).x + .6f

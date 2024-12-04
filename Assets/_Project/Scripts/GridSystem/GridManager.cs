@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,33 +12,21 @@ namespace SMTD.GridSystem
         [SerializeField] Grid grid;
         [SerializeField] GridInput gridInput;
         
-        Vector2 _gridSize;
-        IDraggable _selectedGridObject;
+        private Vector2Int _gridSize;
+        private IDraggable _selectedGridObject;
+        private bool ShouldSnapX => (int)_gridSize.x % 2 == 1;
+        private bool ShouldSnapY => (int)_gridSize.y % 2 == 1;
+        
+        private Dictionary<Vector3Int, GridCell> cells = new Dictionary<Vector3Int, GridCell>();
         
         //TODO: to be initialized from level builder
         [SerializeField] List<GridObject> gridObjects;
-        private bool ShouldFitX => (int)_gridSize.x % 2 == 1;
-        private bool ShouldFitY => (int)_gridSize.y % 2 == 1;
 
-        public void InitGrid(Vector2 gridSize)
-        {
-            _gridSize = gridSize;
-            SetGridRendererSize(_gridSize);
-            //fit grid render to grid components grid tiles
-            gridRenderer.transform.position=new Vector3( 
-                gridRenderer.transform.position.x+ (ShouldFitX?grid.cellSize.x/2:0),
-                gridRenderer.transform.position.y,
-                gridRenderer.transform.position.z+(ShouldFitY?grid.cellSize.y/2:0));
-        }
         #region MonoBehaviour
         private void Start()
         {
             gridInput.GridInputDown += GridInputGridInputDown;
             gridInput.GridInputCancelled += GridInputOnGridInputCancelled;
-            foreach (var gridObject in gridObjects)
-            {
-                gridObject.Init(grid,gridInput);
-            }
         }
 
         private void OnDestroy()
@@ -53,6 +42,8 @@ namespace SMTD.GridSystem
         }
 
         #endregion
+       
+        #region GridInput
 
         private void GridInputGridInputDown()
         {
@@ -72,20 +63,92 @@ namespace SMTD.GridSystem
             _selectedGridObject=null;
         }
 
-        private void SetGridRendererSize(Vector2 tile)
+        #endregion
+        
+        public void InitGrid(Vector2Int gridSize, Vector3 cellSize)
         {
-            gridRenderer.size = tile;
+            _gridSize = gridSize;
+            grid.cellSize = cellSize;
+            InitGridRenderer(_gridSize);
+            CreateGridCells();
+            foreach (var gridObject in gridObjects)
+            {
+                gridObject.Init(grid,gridInput);
+            }
+            // GridCell startCell =GetCell(new Vector3Int((int)_gridSize.x - 1, 0, (int)gridSize.y - 1)); // Sağ üst hücre
+            // GridCell targetCell = GetCell(new Vector3Int(-(int)_gridSize.x+1 , 0, -(int)gridSize.y + 1)); // Sol alt hücre
+            //
+            // List<GridCell> path = PathFinder.FindPath(startCell, targetCell, this);
+            //
+            // if (path != null)
+            // {
+            //     StartCoroutine(FollowPath(path));
+            // }
+            // else
+            // {
+            //     Debug.Log("Yol bulunamadı!");
+            // }
+        }
+
+        private IEnumerator FollowPath(List<GridCell> path)
+        {
+            foreach (var cell in path)
+            {
+                Vector3 targetPosition = new Vector3(cell.WorldPosition.x, 0, cell.WorldPosition.y);
+                while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
+                {
+                    gridObjects[0].transform.position =
+                        Vector3.MoveTowards(transform.position, targetPosition, 2 * Time.deltaTime);
+                    yield return null;
+                }
+            }
+        }
+
+        private void CreateGridCells()
+        {
+            for (int x = 0; x < _gridSize.x; x++)
+            {
+                for (int z = 0; z < _gridSize.y; z++)
+                {
+                    Vector3Int cellPosition = new Vector3Int(x, 0, z);
+                    Vector3 worldPosition = grid.CellToWorld(cellPosition);
+
+                    GridCell cell = new GridCell
+                    {
+                        CellPosition = cellPosition,
+                        WorldPosition = worldPosition,
+                        IsWalkable = true // Varsayılan olarak geçilebilir
+                    };
+
+                    cells[cellPosition] = cell;
+                }
+            }
+        }
+        public GridCell GetCell(Vector3Int cellPosition)
+        {
+            return cells.GetValueOrDefault(cellPosition);
+        }
+
+        private void InitGridRenderer(Vector2 size)
+        {
+            gridRenderer.size = size;
+            gridRenderer.transform.localScale = new Vector3(grid.cellSize.x, grid.cellSize.y, 1);
+            //fit grid render to grid components grid tiles
+            gridRenderer.transform.position = new Vector3(
+                gridRenderer.transform.position.x + ((size.x / 2)*grid.cellSize.x), // +(ShouldSnapX?grid.cellSize.x/2:0),
+                gridRenderer.transform.position.y,
+                gridRenderer.transform.position.z + (size.y / 2)*grid.cellSize.y); //+(ShouldSnapY?grid.cellSize.y/2:0));
         }
         private MovementLimitations CheckGridObjectMovementLimitations()
         {
             // Hedef pozisyonu hesapla
             var currentGridPosition = _selectedGridObject.CurrentGridPosition();
             
-            var onTopCell = currentGridPosition.y+(ShouldFitY?1:2)>(_gridSize.y/2);
-            var onBottomCell = currentGridPosition.y-1<-(_gridSize.y/2);
+            var onTopCell = currentGridPosition.y+1==_gridSize.y;
+            var onBottomCell = currentGridPosition.y==0;
             
-            var onFarRightCell = currentGridPosition.x+(ShouldFitX?1:2)>(_gridSize.x/2);
-            var onFarLeftCell = currentGridPosition.x-1<-(_gridSize.x/2);
+            var onFarRightCell = currentGridPosition.x+1==_gridSize.x;
+            var onFarLeftCell = currentGridPosition.x==0;
 
             var leftGrid =  currentGridPosition+ Vector3Int.left;
             var rightGrid =  currentGridPosition+ Vector3Int.right;
