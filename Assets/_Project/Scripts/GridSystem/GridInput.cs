@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace SMTD.GridSystem
+namespace SMTD.Grid
 {
     public class GridInput: MonoBehaviour
     {

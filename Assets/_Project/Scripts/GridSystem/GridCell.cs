@@ -1,12 +1,16 @@
 using UnityEngine;
 
-namespace SMTD.GridSystem
+namespace SMTD.Grid
 {
     public class GridCell
     {
+        public GridCell(bool isWalkable=true)
+        {
+            IsWalkable = isWalkable;
+        }
         public Vector3Int CellPosition { get; set; } // Grid'in cell pozisyonu (Grid koordinatları)
         public Vector3 WorldPosition { get; set; } // Gerçek dünya pozisyonu
-        public bool IsWalkable { get; set; } = true; // Hücreye geçilebilir mi?
+        public bool IsWalkable { get; set; } // Hücreye geçilebilir mi?
         public GridCell Parent { get; set; } // Yolun geri izlenmesi için
 
         public int G { get; set; } // Başlangıçtan buraya maliyet

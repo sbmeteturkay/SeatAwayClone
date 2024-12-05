@@ -1,14 +1,15 @@
 using System;
 using UnityEngine;
 
-namespace SMTD.GridSystem
+namespace SMTD.Grid
 {
     public interface IDraggable
     {
         void OnPick();
         void OnRelease();
-        void OnDrag();
-        Vector3Int CurrentGridPosition();
+        void OnDrag(GridSystem gridSystem);
+        GridCell LocatedGridCell();
+        GridCell CurrentCell();
         void SetMovementLimitations(MovementLimitations movementLimitations);
         event Action OnGridChange;
     }
