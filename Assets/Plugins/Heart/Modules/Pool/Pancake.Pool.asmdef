@@ -1,0 +1,17 @@
+{
+    "name": "Pancake.Pool",
+    "rootNamespace": "",
+    "references": [
+        "GUID:2bb2982fd552689428d4c3ae8bb26fb7",
+        "GUID:d263cfcb6fe4c8e458b5530d29ee4d1f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
