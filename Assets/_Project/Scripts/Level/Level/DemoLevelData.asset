@@ -1,0 +1,618 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c3bb35840324cba8169450bd67d5381, type: 3}
+  m_Name: DemoLevelData
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 2100000, guid: 29c2dfc2b193e334386ca6dc0777fb67, type: 2}
+    - {fileID: 2100000, guid: ac1d9cc3778072d438ab3145e3d56b00, type: 2}
+    - {fileID: 2100000, guid: cf2c5981c8cba2f468d640d5b5a1d092, type: 2}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: materialDictionary
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[SMTD.BusPassengerGame.DefinedColors,
+        Assembly-CSharp],[UnityEngine.Material, UnityEngine.CoreModule]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[SMTD.BusPassengerGame.DefinedColors,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 10
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: Grid
+      Entry: 7
+      Data: 2|SMTD.Grid.Level.Cell[,], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 32
+    - Name: ranks
+      Entry: 1
+      Data: 4|8
+    - Name: 
+      Entry: 7
+      Data: 3|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 4|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 5|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 6|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 7|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 8|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 9|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 10|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 11|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 12|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 13|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 14|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 15|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 16|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 17|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 18|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 19|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 20|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 21|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 22|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 23|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 24|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 25|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 26|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 27|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 28|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 29|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 30|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 31|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 32|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 33|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 34|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  GridSize: {x: 4, y: 8}
+  CellSize: {x: 1.2, y: 1.2}
+  passengers: 000000000100000000000000020000000100000000000000
