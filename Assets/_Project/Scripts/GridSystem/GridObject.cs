@@ -32,13 +32,14 @@ namespace SMTD.Grid
         #region IDraggable implementation
         public void OnRelease()
         {
-            if(_locatedCell!=_currentCell)
-                OnGridChange?.Invoke();
+            var prevLocatedCell = _locatedCell;
             transform.DOMove(_currentCell.WorldPosition,.2f);
             _locatedCell.IsWalkable = true;
             _locatedCell = _currentCell;
             _locatedCell.IsWalkable = false;
             _pickedAnimation.Pause();
+            if(prevLocatedCell!=_locatedCell)
+                OnGridChange?.Invoke();
         }
 
         public void OnPick()

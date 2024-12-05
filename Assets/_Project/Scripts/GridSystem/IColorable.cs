@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SMTD.BusPassengerGame
 {
-    interface IColorable
+    public interface IColorable
     {
         Renderer Renderer { get; set; }
         DefinedColors GetColor();

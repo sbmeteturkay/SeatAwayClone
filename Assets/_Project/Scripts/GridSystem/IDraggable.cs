@@ -14,10 +14,6 @@ namespace SMTD.Grid
         event Action OnGridChange;
     }
 
-    interface IMovable
-    {
-        void Move(Vector3 position);
-    }
     public struct MovementLimitations
     {
         public readonly bool CanMoveLeft;

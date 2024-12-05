@@ -17,13 +17,10 @@ namespace SMTD.LevelSystem
 
         protected override void Init(GridSystem firstArgument, PassengerManager secondArgument, GridObjectsController controller)
         {
+            Debug.Log(firstArgument);
             _gridSystem = firstArgument;
             _passengerManager = secondArgument;
             _gridObjectsController = controller;
-        }
-
-        protected override void OnAwake()
-        {
             _gridSystem.InitGrid(levelData.GridSize,levelData.CellSize);
             InitPassengerManager();
             InitGridObjectsController();
@@ -55,7 +52,7 @@ namespace SMTD.LevelSystem
                 passenger.SetColor(passengerColor);
                 passengers.Add(passenger);
             }
-            _passengerManager.Initialize(passengers,_gridSystem,levelData.levelDesignData.materialDictionary);
+            _passengerManager.Initialize(passengers,_gridSystem,levelData.levelDesignData.materialDictionary,_gridObjectsController);
         }
     }
 

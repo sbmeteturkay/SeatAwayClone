@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Pancake.Linq;
 using SMTD.BusPassengerGame;
 using UnityEngine;
 
@@ -74,6 +75,19 @@ namespace SMTD.Grid
         public void Init(Dictionary<DefinedColors, Material> materialDictionary)
         {
             _materialDictionary = materialDictionary;
+        }
+
+        public DefinedColors GetGridColor(IColorable colorable)
+        {
+            return _gridObjects.First(x => x.GetColor() == colorable.GetColor()).GetColor();
+        }
+        public List<GridObject> GetGridObjectsWithColor(IColorable colorable)
+        {
+            return _gridObjects.FindAll(x => x.GetColor() == colorable.GetColor());
+        }
+        public GridObject GetGridObject(Vector3Int gridPos)
+        {
+            return _gridObjects.First(x=>x.LocatedGridCell().CellPosition == gridPos);
         }
     }
 }

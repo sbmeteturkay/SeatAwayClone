@@ -24,23 +24,6 @@ namespace SMTD.Grid
             CreateGridCells();
         }
 
-        public void FollowPathStart(List<GridCell> path,GameObject target)
-        {
-            StartCoroutine(FollowPath(path,target));
-        }
-        public IEnumerator FollowPath(List<GridCell> path,GameObject target)
-        {
-            foreach (var cell in path)
-            {
-                Vector3 targetPosition = new Vector3(cell.WorldPosition.x, 0, cell.WorldPosition.z);
-                while (Vector3.Distance(target.transform.position, targetPosition) > 0.1f)
-                {
-                   target.transform.position =
-                        Vector3.MoveTowards(target.transform.position, targetPosition, 4f * Time.deltaTime);
-                    yield return null;
-                }
-            }
-        }
 
         private void CreateGridCells()
         {
