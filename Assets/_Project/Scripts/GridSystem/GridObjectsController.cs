@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using SMTD.BusPassengerGame;
 using UnityEngine;
 
 namespace SMTD.Grid
@@ -8,8 +9,9 @@ namespace SMTD.Grid
     {
         [SerializeField] GridSystem gridSystem;
         [SerializeField] GridInput gridInput;
-        [SerializeField] List<GridObject> gridObjects;
+        private List<GridObject> _gridObjects=new();
         private IDraggable _selectedGridObject;
+        private Dictionary<DefinedColors, Material> _materialDictionary = new();
         public static event Action<IDraggable> OnDragObjectMoved;
 
         #region MonoBehaviour
@@ -17,11 +19,6 @@ namespace SMTD.Grid
         {
             gridInput.GridInputDown += GridInputGridInputDown;
             gridInput.GridInputCancelled += GridInputOnGridInputCancelled;
-            for (var index = 0; index < gridObjects.Count; index++)
-            {
-                var gridObject = gridObjects[index];
-                gridObject.Init(gridSystem.Grid, gridInput, gridSystem.GetCellFromGridPosition(new Vector3Int(index, 1, 0)));
-            }
         }
 
         private void OnDestroy()
@@ -42,7 +39,7 @@ namespace SMTD.Grid
         {
             var inputDownCell = gridSystem.GetCellFromGridPosition(gridSystem.Grid.WorldToCell(gridInput.GetInputMapPosition()));
             //check if clicked position has object 
-            foreach (var gridObject in gridObjects)
+            foreach (var gridObject in _gridObjects)
             {
                 if (gridObject.LocatedGridCell().CellPosition != inputDownCell.CellPosition) continue;
                 _selectedGridObject = gridObject;
@@ -65,8 +62,18 @@ namespace SMTD.Grid
         {
             OnDragObjectMoved?.Invoke(_selectedGridObject);
         }
-
-
         #endregion
+
+        public void AddGridObject(GridObject gridObject,Vector2Int gridCell)
+        {
+            gridObject.Init(gridSystem.Grid, gridInput, gridSystem.GetCellFromGridPosition(new Vector3Int(gridCell.x, gridCell.y, 0)));
+            gridObject.SetMaterial(_materialDictionary[gridObject.GetColor()]);
+            _gridObjects.Add(gridObject);
+        }
+
+        public void Init(Dictionary<DefinedColors, Material> materialDictionary)
+        {
+            _materialDictionary = materialDictionary;
+        }
     }
 }

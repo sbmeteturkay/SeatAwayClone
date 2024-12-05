@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Sisus.Init;
 using UnityEngine;
 
 namespace SMTD.Grid
@@ -11,14 +12,10 @@ namespace SMTD.Grid
         [SerializeField] UnityEngine.Grid grid;
         private Vector2Int _gridSize;
         private readonly Dictionary<Vector3Int, GridCell> _cells = new Dictionary<Vector3Int, GridCell>();
-        GridCell _emptyCell= new GridCell(false);
-
-        
-        //TODO: to be initialized from level builder
         public Vector2Int GridSize => _gridSize;
         public Vector3 CellSize => grid.cellSize;
         public UnityEngine.Grid Grid => grid;
-
+        readonly GridCell _emptyCell= new(false);
         public void InitGrid(Vector2Int gridSize, Vector3 cellSize)
         {
             _gridSize = gridSize;
@@ -27,6 +24,10 @@ namespace SMTD.Grid
             CreateGridCells();
         }
 
+        public void FollowPathStart(List<GridCell> path,GameObject target)
+        {
+            StartCoroutine(FollowPath(path,target));
+        }
         public IEnumerator FollowPath(List<GridCell> path,GameObject target)
         {
             foreach (var cell in path)

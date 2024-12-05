@@ -1,10 +1,12 @@
 using System;
 using DG.Tweening;
+using Sisus.Init;
+using SMTD.BusPassengerGame;
 using UnityEngine;
 
 namespace SMTD.Grid
 {
-    public class GridObject : MonoBehaviour,IDraggable
+    public class GridObject : MonoBehaviour<Renderer>,IDraggable, IColorable
     {
         private UnityEngine.Grid _grid;
         private GridInput _gridInput;
@@ -12,6 +14,7 @@ namespace SMTD.Grid
         private Tween _pickedAnimation;
         private GridCell _locatedCell;
         private GridCell _currentCell;
+        private DefinedColors _definedColor;
         public event Action OnGridChange;
         public void Init(UnityEngine.Grid grid,GridInput input,GridCell targetCell)
         {
@@ -86,6 +89,31 @@ namespace SMTD.Grid
             return _currentCell;
         }
         #endregion
+
+        #region IColorable implementattion
+
+        public Renderer Renderer { get; set; }
+
+        public DefinedColors GetColor()
+        {
+            return _definedColor;
+        }
+
+        public void SetColor(DefinedColors color)
+        {
+            _definedColor=color;
+        }
+
+        public void SetMaterial(Material material)
+        {
+            Renderer.material = material;
+        }
+        #endregion
+
+        protected override void Init(Renderer argument)
+        {
+            Renderer = argument;
+        }
     }
 
 }
