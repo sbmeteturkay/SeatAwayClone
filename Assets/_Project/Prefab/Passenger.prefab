@@ -61,7 +61,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: cc011460b7171fc46938870bd5105698,
         type: 3}
       propertyPath: m_Name
-      value: Character
+      value: Passenger
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -71,7 +71,17 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 4850057959531139948}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cc011460b7171fc46938870bd5105698,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1574689465293940076}
   m_SourcePrefab: {fileID: 100100000, guid: cc011460b7171fc46938870bd5105698, type: 3}
+--- !u!137 &4038415819839886100 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -2843909369972686622, guid: cc011460b7171fc46938870bd5105698,
+    type: 3}
+  m_PrefabInstance: {fileID: 6954457999498826742}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7800897996820672167 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cc011460b7171fc46938870bd5105698,
@@ -91,3 +101,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+--- !u!114 &1574689465293940076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7800897996820672167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e45ddbfa8cdb36b49bfa80d78d74a617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 4850057959531139948}
+  nullArgumentGuard: 3
+  argument:
+    reference: {fileID: 4038415819839886100}
+    value: {fileID: 0}
+  disposeArgumentsOnDestroy: 0
+  asyncValueProviderArguments: 0
