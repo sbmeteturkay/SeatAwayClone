@@ -96,7 +96,6 @@ namespace SMTD.BusPassengerGame
             {
                 GridCell targetCell = gridSystem.GetCellFromGridPosition(gridObject.LocatedGridCell().CellPosition + Vector3Int.up);
 
-                Debug.Log(gridObject.LocatedGridCell().CellPosition);
                 List<GridCell> path = PathFinder.FindPath(startCell,targetCell , gridSystem);
                 if (path != null)
                 {
@@ -104,7 +103,6 @@ namespace SMTD.BusPassengerGame
                     StartCoroutine(FollowPath(path,transform.gameObject));
                     break;
                 }
-                Debug.Log("Yol bulunamadı!");
             }
         }
 

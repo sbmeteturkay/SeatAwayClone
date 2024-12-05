@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Pancake.Pools;
 using Sisus.Init;
@@ -17,11 +18,15 @@ namespace SMTD.LevelSystem
 
         protected override void Init(GridSystem firstArgument, PassengerManager secondArgument, GridObjectsController controller)
         {
-            Debug.Log(firstArgument);
             _gridSystem = firstArgument;
             _passengerManager = secondArgument;
             _gridObjectsController = controller;
             _gridSystem.InitGrid(levelData.GridSize,levelData.CellSize);
+
+        }
+
+        private void Start()
+        {
             InitPassengerManager();
             InitGridObjectsController();
         }

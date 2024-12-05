@@ -17,6 +17,7 @@ namespace SMTD.BusPassengerGame
         private GridSystem _gridSystem;
         private Dictionary<DefinedColors, Material> _materialDictionary;
         private GridObjectsController _gridObjectsController;
+        public static event Action<List<Passenger>> OnPassengerUpdate;
 
         public void Initialize(List<Passenger> passengers, GridSystem gridSystem, Dictionary<DefinedColors, Material> materialDictionary,GridObjectsController gridObjectController)
         {
@@ -82,11 +83,12 @@ namespace SMTD.BusPassengerGame
             
             value.Passenger.transform.SetParent(targetGrid.transform);
             value.Passenger.transform.rotation=Quaternion.identity;
-            value.Passenger.transform.DOLocalJump(Vector3.up/2, 1, 1, .5f);
+            value.Passenger.transform.DOLocalJump(Vector3.zero, 1, 1, .5f);
             value.Passenger.sitGridObject = targetGrid;
             var nextPassenger=_passengers.FirstOrDefault(x => x.sitGridObject == null);
             if(nextPassenger!=null)
                 AddObserverPassenger(nextPassenger);
+            OnPassengerUpdate?.Invoke(_passengers);
         }
     }
 }

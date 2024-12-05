@@ -2,7 +2,7 @@ using SMTD.Grid;
 using TMPro;
 using UnityEngine;
 
-namespace SMTD.BusPassengerGame{
+namespace SMTD.BusPassengerGame.UI{
     public class MoveCounter : MonoBehaviour
     {
         [SerializeField] TMP_Text moveCounterText;
