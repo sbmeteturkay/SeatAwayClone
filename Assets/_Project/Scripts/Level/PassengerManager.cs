@@ -1,24 +1,28 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
+using Pancake.Pattern;
 using Sisus.Init;
 using SMTD.Grid;
 using UnityEngine;
 
 namespace SMTD.BusPassengerGame
 {
+
     [Service(typeof(PassengerManager))]
-    public class PassengerManager: IDisposable
+    public class PassengerManager: Publisher<GridObjectsController, GridSystem>, IDisposable, Pancake.Pattern.IObserver<SitPublish>
     {
-        //todo:init from level scriptable object
         private List<Passenger> _passengers;
         private GridSystem _gridSystem;
         private Dictionary<DefinedColors, Material> _materialDictionary;
-    
-        public void Initialize(List<Passenger> passengers, GridSystem gridSystem, Dictionary<DefinedColors, Material> materialDictionary)
+        private GridObjectsController _gridObjectsController;
+
+        public void Initialize(List<Passenger> passengers, GridSystem gridSystem, Dictionary<DefinedColors, Material> materialDictionary,GridObjectsController gridObjectController)
         {
             _gridSystem = gridSystem;
             _materialDictionary= materialDictionary;
+            _gridObjectsController = gridObjectController;
             CreatePassengers(passengers);
             GridObjectsController.OnDragObjectMoved+= GridManagerOnOnDragObjectMoved;
         }
@@ -30,9 +34,21 @@ namespace SMTD.BusPassengerGame
         {
             _passengers=passengers;
             LineUpPassengers();
-            SetColorMaterialsOfPassengers();
+            SetColorMaterialsOfPassengers(); 
+            AddObserverPassenger(0);
         }
 
+        private void AddObserverPassenger(int index)
+        {
+            AddObserver(_passengers[index]);
+            _passengers[index].sitPublish.AddObserver(this);
+        }
+
+        private void AddObserverPassenger(Passenger passenger)
+        {
+            AddObserver(passenger);
+            passenger.sitPublish.AddObserver(this);
+        }
         private void SetColorMaterialsOfPassengers()
         {
             foreach (var passenger in _passengers)
@@ -54,28 +70,23 @@ namespace SMTD.BusPassengerGame
         }
         private void GridManagerOnOnDragObjectMoved(IDraggable obj)
         {
-            GridCell startCell =_gridSystem.GetCell(new Vector3Int(_gridSystem.GridSize.x-1, _gridSystem.GridSize.y - 1, 0)); // Sağ üst hücre
-            GridCell targetCell = _gridSystem.GetCell(new Vector3Int(0 , 0, 0)); // Sol alt hücre
-            List<GridCell> path = PathFinder.FindPath(startCell, targetCell, _gridSystem);
-            
-            if (path != null)
-            {
-                var firstPassenger=_passengers.First(x => x.state == Passenger.State.OnLine);
-                _gridSystem.FollowPathStart(path,firstPassenger.transform.gameObject);
-                firstPassenger.state = Passenger.State.Moving;
-                foreach (var passenger in _passengers)
-                {
-                    if (passenger.state == Passenger.State.OnLine)
-                    {
-                        passenger.Move(passenger.transform.position+Vector3.up);
-                    }
-                }
-            }
-            else
-            {
-                Debug.Log("Yol bulunamadı!");
-            }
+            Notify(_gridObjectsController,_gridSystem);
         }
 
+        public void OnNotify(SitPublish value)
+        {
+            value.Passenger.sitPublish.RemoveObserver(this);
+            RemoveObserver(value.Passenger);
+            var targetGrid =
+                _gridObjectsController.GetGridObject(value.Passenger.lastTargetGridCell.CellPosition + Vector3Int.down);
+            
+            value.Passenger.transform.SetParent(targetGrid.transform);
+            value.Passenger.transform.rotation=Quaternion.identity;
+            value.Passenger.transform.DOLocalJump(Vector3.up/2, 1, 1, .5f);
+            value.Passenger.sitGridObject = targetGrid;
+            var nextPassenger=_passengers.FirstOrDefault(x => x.sitGridObject == null);
+            if(nextPassenger!=null)
+                AddObserverPassenger(nextPassenger);
+        }
     }
 }
