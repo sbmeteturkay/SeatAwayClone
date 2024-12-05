@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SMTD.GridSystem
+namespace SMTD.Grid
 {
     public static class PathFinder
     {
-        private static List<GridCell> GetNeighbors(GridCell cell, GridManager gridManager)
+        private static List<GridCell> GetNeighbors(GridCell cell, GridSystem gridSystem)
         {
             List<GridCell> neighbors = new List<GridCell>();
             Vector3Int[] directions = new Vector3Int[]
@@ -19,7 +19,7 @@ namespace SMTD.GridSystem
             foreach (var direction in directions)
             {
                 Vector3Int neighborPos = cell.CellPosition + direction;
-                var neighbor = gridManager.GetCell(neighborPos);
+                var neighbor = gridSystem.GetCell(neighborPos);
                 if (neighbor != null)
                 {
                     neighbors.Add(neighbor);
@@ -28,7 +28,7 @@ namespace SMTD.GridSystem
 
             return neighbors;
         }
-        public static List<GridCell> FindPath(GridCell startCell, GridCell targetCell, GridManager gridManager)
+        public static List<GridCell> FindPath(GridCell startCell, GridCell targetCell, GridSystem gridSystem)
         {
             List<GridCell> openList = new List<GridCell>();
             HashSet<GridCell> closedList = new HashSet<GridCell>();
@@ -56,7 +56,7 @@ namespace SMTD.GridSystem
                     return RetracePath(startCell, targetCell);
                 }
 
-                foreach (var neighbor in GetNeighbors(currentCell, gridManager))
+                foreach (var neighbor in GetNeighbors(currentCell, gridSystem))
                 {
                     if (!neighbor.IsWalkable || closedList.Contains(neighbor))
                         continue;

@@ -1,26 +1,34 @@
 using System.Collections.Generic;
+using SMTD.BusPassengerGame;
+using SMTD.Grid;
 using UnityEngine;
 
-namespace SMTD.GridSystem
+namespace SMTD.LevelSystem
 {
     public class LevelManager : MonoBehaviour
     {
-        [SerializeField] GridManager gridManager;
+        [SerializeField] GridSystem gridSystem;
+        [SerializeField] PassengerManager passengerManager;
         [SerializeField] List<Passenger> passengers;
-        [SerializeField] Vector2 gridSize;
+        [SerializeField] Vector2Int gridSize;
+        [SerializeField] Vector3 cellSize;
 
-        private void Start()
+        private void Awake()
         {
-            gridManager.InitGrid(gridSize);
+            gridSystem.InitGrid(gridSize,cellSize);
+            InitPassengerManager();
         }
 
-        public void InitPassengers()
+        private void InitPassengerManager()
         {
-            for (var index = 0; index < passengers.Count; index++)
-            {
-                var passenger = passengers[index];
-               // passenger.Move(gridManager.GetWorldPositionFromGridPosition(new Vector3Int((gridSize.x / 2) + 1,(-gridSize / 2)+index));
-            }
+            passengerManager.Initialize(passengers,gridSystem);
         }
+    }
+
+    public enum DefinedColors
+    {
+        Blue,
+        Red,
+        Orange,
     }
 }
