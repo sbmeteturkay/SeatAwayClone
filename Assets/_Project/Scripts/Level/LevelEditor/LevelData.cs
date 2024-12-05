@@ -11,10 +11,10 @@ namespace SMTD.Grid.Level
     [CreateAssetMenu(fileName = "NewLevelData", menuName = "Level/LevelData")]
     public class LevelData : SerializedScriptableObject
     {
+        public LevelDesignData levelDesignData;
         [MinValue(1), OnValueChanged("GenerateGrid")]
         public Vector2Int GridSize; // Grid'in yatay boyutu
         public Vector2 CellSize; // Grid'in yatay boyutu
-        public Dictionary<DefinedColors, Material> materialDictionary = new ();
         public List<DefinedColors> passengers = new ();
         
         [TableMatrix(DrawElementMethod = "DrawColoredEnumElement", ResizableColumns = false)]

@@ -1,40 +1,45 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sisus.Init;
 using SMTD.Grid;
 using UnityEngine;
 
 namespace SMTD.BusPassengerGame
 {
-    public class PassengerManager:MonoBehaviour
+    [Service(typeof(PassengerManager))]
+    public class PassengerManager: IDisposable
     {
         //todo:init from level scriptable object
-         private List<Passenger> _passengers;
-         private GridSystem _gridSystem;
-
-        #region  Monobehaviour
-        private void Start()
-        {
-            GridObjectsController.OnDragObjectMoved+= GridManagerOnOnDragObjectMoved;
-        }
+        private List<Passenger> _passengers;
+        private GridSystem _gridSystem;
+        private Dictionary<DefinedColors, Material> _materialDictionary;
     
-        private void OnDestroy()
-        {
-            GridObjectsController.OnDragObjectMoved-= GridManagerOnOnDragObjectMoved;
-        }
-
-        #endregion
-
-        public void Initialize(List<Passenger> passengers, GridSystem gridSystem)
+        public void Initialize(List<Passenger> passengers, GridSystem gridSystem, Dictionary<DefinedColors, Material> materialDictionary)
         {
             _gridSystem = gridSystem;
+            _materialDictionary= materialDictionary;
             CreatePassengers(passengers);
+            GridObjectsController.OnDragObjectMoved+= GridManagerOnOnDragObjectMoved;
+        }
+        public void Dispose()
+        {
+            GridObjectsController.OnDragObjectMoved-= GridManagerOnOnDragObjectMoved;
         }
         private void CreatePassengers(List<Passenger> passengers)
         {
             _passengers=passengers;
             LineUpPassengers();
+            SetColorMaterialsOfPassengers();
         }
 
+        private void SetColorMaterialsOfPassengers()
+        {
+            foreach (var passenger in _passengers)
+            {
+                passenger.SetMaterial(_materialDictionary[passenger.GetColor()]);
+            }
+        }
         private void LineUpPassengers()
         {
             var topRightCell =
@@ -55,12 +60,12 @@ namespace SMTD.BusPassengerGame
             
             if (path != null)
             {
-                var firstPassenger=_passengers.First(x => x.state == State.onLine);
-                StartCoroutine(_gridSystem.FollowPath(path,firstPassenger.transform.gameObject));
-                firstPassenger.state = State.moving;
+                var firstPassenger=_passengers.First(x => x.state == Passenger.State.OnLine);
+                _gridSystem.FollowPathStart(path,firstPassenger.transform.gameObject);
+                firstPassenger.state = Passenger.State.Moving;
                 foreach (var passenger in _passengers)
                 {
-                    if (passenger.state == State.onLine)
+                    if (passenger.state == Passenger.State.OnLine)
                     {
                         passenger.Move(passenger.transform.position+Vector3.up);
                     }
@@ -71,5 +76,6 @@ namespace SMTD.BusPassengerGame
                 Debug.Log("Yol bulunamadı!");
             }
         }
+
     }
 }

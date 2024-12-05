@@ -15,86 +15,53 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects:
-    - {fileID: 2100000, guid: 29c2dfc2b193e334386ca6dc0777fb67, type: 2}
-    - {fileID: 2100000, guid: ac1d9cc3778072d438ab3145e3d56b00, type: 2}
-    - {fileID: 2100000, guid: cf2c5981c8cba2f468d640d5b5a1d092, type: 2}
+    ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: materialDictionary
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[SMTD.BusPassengerGame.DefinedColors,
-        Assembly-CSharp],[UnityEngine.Material, UnityEngine.CoreModule]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[SMTD.BusPassengerGame.DefinedColors,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 3
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 10
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 1
-    - Name: $v
-      Entry: 10
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 2
-    - Name: $v
-      Entry: 10
-      Data: 2
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: Grid
       Entry: 7
-      Data: 2|SMTD.Grid.Level.Cell[,], Assembly-CSharp
+      Data: 0|SMTD.Grid.Level.Cell[,], Assembly-CSharp
     - Name: 
       Entry: 12
       Data: 32
     - Name: ranks
       Entry: 1
       Data: 4|8
+    - Name: 
+      Entry: 7
+      Data: 1|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 2|SMTD.Grid.Level.Cell, Assembly-CSharp
+    - Name: DefinedColors
+      Entry: 7
+      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 7
       Data: 3|SMTD.Grid.Level.Cell, Assembly-CSharp
@@ -167,8 +134,8 @@ MonoBehaviour:
       Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
         mscorlib
     - Name: 
-      Entry: 6
-      Data: 
+      Entry: 3
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -199,8 +166,8 @@ MonoBehaviour:
       Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
         mscorlib
     - Name: 
-      Entry: 3
-      Data: 0
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -263,8 +230,8 @@ MonoBehaviour:
       Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
         mscorlib
     - Name: 
-      Entry: 6
-      Data: 
+      Entry: 3
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
@@ -295,8 +262,8 @@ MonoBehaviour:
       Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
         mscorlib
     - Name: 
-      Entry: 3
-      Data: 1
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -311,8 +278,8 @@ MonoBehaviour:
       Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
         mscorlib
     - Name: 
-      Entry: 6
-      Data: 
+      Entry: 3
+      Data: 2
     - Name: 
       Entry: 8
       Data: 
@@ -343,8 +310,8 @@ MonoBehaviour:
       Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
         mscorlib
     - Name: 
-      Entry: 3
-      Data: 2
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -423,8 +390,8 @@ MonoBehaviour:
       Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
         mscorlib
     - Name: 
-      Entry: 6
-      Data: 
+      Entry: 3
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -455,8 +422,8 @@ MonoBehaviour:
       Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
         mscorlib
     - Name: 
-      Entry: 3
-      Data: 0
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -576,43 +543,12 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
-      Entry: 7
-      Data: 33|SMTD.Grid.Level.Cell, Assembly-CSharp
-    - Name: DefinedColors
-      Entry: 7
-      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 6
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 34|SMTD.Grid.Level.Cell, Assembly-CSharp
-    - Name: DefinedColors
-      Entry: 7
-      Data: System.Nullable`1[[SMTD.BusPassengerGame.DefinedColors, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 6
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
       Entry: 13
       Data: 
     - Name: 
       Entry: 8
       Data: 
+  levelDesignData: {fileID: 11400000, guid: c4bb726f03c316046a96150730d519c7, type: 2}
   GridSize: {x: 4, y: 8}
   CellSize: {x: 1.2, y: 1.2}
   passengers: 000000000100000000000000020000000100000000000000

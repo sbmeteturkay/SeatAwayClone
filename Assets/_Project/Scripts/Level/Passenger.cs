@@ -1,23 +1,21 @@
+using Sisus.Init;
 using SMTD.Grid;
-using SMTD.LevelSystem;
 using UnityEngine;
 
 namespace SMTD.BusPassengerGame
 {
-    public enum State
-    {
-        onLine,
-        moving,
-        seated
-    }
-    public class Passenger : MonoBehaviour, IMovable, IColorable
+    public class Passenger : MonoBehaviour<Renderer>, IMovable, IColorable
     {
         DefinedColors _definedColor;
         public State state;
+
+
         public void Move(Vector3 position)
         {
             transform.position = position;
         }
+
+        public Renderer Renderer { get; set; }
 
         public DefinedColors GetColor()
         {
@@ -27,6 +25,22 @@ namespace SMTD.BusPassengerGame
         public void SetColor(DefinedColors color)
         {
             _definedColor=color;
+        }
+
+        public void SetMaterial(Material material)
+        {
+            Renderer.material = material;
+        }
+        public enum State
+        {
+            OnLine,
+            Moving,
+            Seated
+        }
+
+        protected override void Init(Renderer argument)
+        {
+            Renderer=argument;
         }
     }
 }
