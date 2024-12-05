@@ -1,6 +1,4 @@
-
-using System;
-using SMTD.GridSystem;
+using SMTD.Grid;
 using TMPro;
 using UnityEngine;
 
@@ -9,10 +7,20 @@ namespace SMTD.BusPassengerGame{
     {
         [SerializeField] TMP_Text moveCounterText;
 
+        #region MonoBehaviour
+
         private void Start()
         {
-            GridManager.OnDragObjectMoved+= GridManagerOnOnDragObjectMoved;
+            GridObjectsController.OnDragObjectMoved+= GridManagerOnOnDragObjectMoved;
         }
+
+        private void OnDestroy()
+        {
+            GridObjectsController.OnDragObjectMoved-= GridManagerOnOnDragObjectMoved;
+        }
+
+        #endregion
+
 
         private void GridManagerOnOnDragObjectMoved(IDraggable obj)
         {
