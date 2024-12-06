@@ -77,9 +77,9 @@ namespace SMTD.Grid
             _materialDictionary = materialDictionary;
         }
 
-        public DefinedColors GetGridColor(IColorable colorable)
+        public DefinedColors GetGridObjectWithColor(IColorable colorable)
         {
-            return _gridObjects.First(x => x.GetColor() == colorable.GetColor()).GetColor();
+            return _gridObjects.FirstOrDefault(x => x.GetColor() == colorable.GetColor()).GetColor();
         }
         public List<GridObject> GetGridObjectsWithColor(IColorable colorable)
         {
@@ -87,7 +87,9 @@ namespace SMTD.Grid
         }
         public GridObject GetGridObject(Vector3Int gridPos)
         {
-            return _gridObjects.First(x=>x.LocatedGridCell().CellPosition == gridPos);
+            return _gridObjects.FirstOrDefault(x=>
+                x.LocatedGridCell().CellPosition == gridPos
+                );
         }
     }
 }

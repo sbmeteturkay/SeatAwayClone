@@ -16,6 +16,11 @@ namespace SMTD.Grid
         private GridCell _currentCell;
         private DefinedColors _definedColor;
         public event Action OnGridChange;
+        
+        protected override void Init(Renderer argument)
+        {
+            Renderer = argument;
+        }
         public void Init(UnityEngine.Grid grid,GridInput input,GridCell targetCell)
         {
             _grid = grid;
@@ -111,10 +116,6 @@ namespace SMTD.Grid
         }
         #endregion
 
-        protected override void Init(Renderer argument)
-        {
-            Renderer = argument;
-        }
     }
 
 }

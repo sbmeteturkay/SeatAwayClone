@@ -364,6 +364,7 @@ GameObject:
   m_Component:
   - component: {fileID: 170014990}
   - component: {fileID: 170014991}
+  - component: {fileID: 170014992}
   m_Layer: 5
   m_Name: Layout
   m_TagString: Untagged
@@ -419,6 +420,21 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &170014992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170014989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385f32787948448fafbb82eb4831457b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  red: {fileID: 612143610}
+  blue: {fileID: 1753029677}
+  orange: {fileID: 736979945}
 --- !u!1 &216825508
 GameObject:
   m_ObjectHideFlags: 0
