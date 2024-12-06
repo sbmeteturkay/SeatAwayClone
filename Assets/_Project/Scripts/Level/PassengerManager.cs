@@ -11,7 +11,7 @@ namespace SMTD.BusPassengerGame
 {
 
     [Service(typeof(PassengerManager))]
-    public class PassengerManager: Publisher<GridObjectsController, GridSystem>, IDisposable, Pancake.Pattern.IObserver<SitPublish>
+    public class PassengerManager: Publisher<PassengerManager>, IDisposable
     {
         private List<Passenger> _passengers;
         private GridSystem _gridSystem;
@@ -42,13 +42,11 @@ namespace SMTD.BusPassengerGame
         private void AddObserverPassenger(int index)
         {
             AddObserver(_passengers[index]);
-            _passengers[index].sitPublish.AddObserver(this);
         }
 
         private void AddObserverPassenger(Passenger passenger)
         {
             AddObserver(passenger);
-            passenger.sitPublish.AddObserver(this);
         }
         private void SetColorMaterialsOfPassengers()
         {
@@ -71,24 +69,29 @@ namespace SMTD.BusPassengerGame
         }
         private void GridManagerOnOnDragObjectMoved(IDraggable obj)
         {
-            Notify(_gridObjectsController,_gridSystem);
+            Notify(this);
         }
 
-        public void OnNotify(SitPublish value)
+        public GridSystem GetGridSystem => _gridSystem;
+        public GridObjectsController GetGridObjectsController => _gridObjectsController;
+
+        public void QueueNextPassenger()
         {
-            value.Passenger.sitPublish.RemoveObserver(this);
-            RemoveObserver(value.Passenger);
-            var targetGrid =
-                _gridObjectsController.GetGridObject(value.Passenger.lastTargetGridCell.CellPosition + Vector3Int.down);
-            
-            value.Passenger.transform.SetParent(targetGrid.transform);
-            value.Passenger.transform.rotation=Quaternion.identity;
-            value.Passenger.transform.DOLocalJump(Vector3.zero, 1, 1, .5f);
-            value.Passenger.sitGridObject = targetGrid;
             var nextPassenger=_passengers.FirstOrDefault(x => x.sitGridObject == null);
             if(nextPassenger!=null)
                 AddObserverPassenger(nextPassenger);
             OnPassengerUpdate?.Invoke(_passengers);
+        }
+
+        public bool HasPassengerOnObject(GridCell cell)
+        {
+            foreach (var passenger in _passengers)
+            {
+                if (passenger.sitGridObject == null)
+                    continue;
+                return passenger.sitGridObject==_gridObjectsController.GetGridObject(cell.CellPosition);
+            }
+            return false;
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Pancake.Pattern;
 using Sisus.Init;
 using SMTD.Grid;
@@ -7,40 +8,21 @@ using UnityEngine;
 
 namespace SMTD.BusPassengerGame
 {
-    public class SitPublish : Publisher<SitPublish>
-    {
-        public Passenger Passenger;
-
-        public SitPublish(Passenger passenger)
-        {
-            Passenger = passenger;
-        }
-
-        public void CheckNotify()
-        {
-            Notify(this);
-        }
-    }
-
     
-    public class Passenger : MonoBehaviour<Renderer>, IColorable, IObserver<GridObjectsController,GridSystem>
+    public class Passenger : MonoBehaviour<Renderer>, IColorable, IObserver<PassengerManager>
     {
         public Renderer Renderer { get; set; }
         public Animator animator;
+        public GridObject sitGridObject;
         private DefinedColors _definedColor;
         private StateMachine _stateMachine;
         private bool _seated = false;
         private bool _findSeat = false;
-        private bool _onQueue = false;
-        public SitPublish sitPublish;
-        public GridObject sitGridObject;
-        public GridCell lastTargetGridCell;
 
         protected override void Init(Renderer argument)
         {
             Renderer=argument;
             InitPassengerStates();
-            sitPublish = new SitPublish(this);
         }
 
         #region MonoBehaviour
@@ -89,18 +71,27 @@ namespace SMTD.BusPassengerGame
             Renderer.material = material;
         }
 
-        public void OnNotify(GridObjectsController gridObjectsController,GridSystem gridSystem)
+        public void OnNotify(PassengerManager passengerManager)
         {
+            var gridSystem = passengerManager.GetGridSystem;
             GridCell startCell =gridSystem.GetCell(new Vector3Int(gridSystem.GridSize.x-1, gridSystem.GridSize.y - 1, 0)); // Sağ üst hücre
-            foreach (var gridObject in gridObjectsController.GetGridObjectsWithColor(this))
+            
+            foreach (var gridObject in passengerManager.GetGridObjectsController.GetGridObjectsWithColor(this))
             {
+                GridCell seatCell = gridObject.LocatedGridCell();
+                if(passengerManager.HasPassengerOnObject(seatCell))
+                    continue;
+                
                 GridCell targetCell = gridSystem.GetCellFromGridPosition(gridObject.LocatedGridCell().CellPosition + Vector3Int.up);
-
+                
                 List<GridCell> path = PathFinder.FindPath(startCell,targetCell , gridSystem);
                 if (path != null)
                 {
-                    _findSeat=true;
+                    sitGridObject = gridObject;
+                    passengerManager.RemoveObserver(this);
+                    passengerManager.QueueNextPassenger();
                     StartCoroutine(FollowPath(path,transform.gameObject));
+                    _findSeat=true;
                     break;
                 }
             }
@@ -118,8 +109,6 @@ namespace SMTD.BusPassengerGame
                     target.transform.LookAt(targetPosition);
                     yield return null;
                 }
-
-                lastTargetGridCell = cell;
             }
             _seated=true;
         }
@@ -127,10 +116,11 @@ namespace SMTD.BusPassengerGame
 
     public abstract class PassengerState : State
     {
-        protected Passenger passenger;
-        public PassengerState(Passenger passenger)
+        protected readonly Passenger Passenger;
+
+        protected PassengerState(Passenger passenger)
         {
-            this.passenger = passenger;
+            this.Passenger = passenger;
         }
     }
     public class OnQueue:PassengerState{
@@ -141,6 +131,7 @@ namespace SMTD.BusPassengerGame
         public override void OnEnter()
         {
             base.OnEnter();
+            Passenger.animator.CrossFade("Idle",0.2f);
         }
     }
 
@@ -152,7 +143,7 @@ namespace SMTD.BusPassengerGame
         public override void OnEnter()
         {
             base.OnEnter();
-            passenger.animator.CrossFade("Walk",0.2f);
+            Passenger.animator.CrossFade("Walk",0.2f);
         }
     }
 
@@ -164,8 +155,10 @@ namespace SMTD.BusPassengerGame
         public override void OnEnter()
         {
             base.OnEnter();
-            passenger.animator.CrossFade("Sit",.2f);
-            passenger.sitPublish.CheckNotify();
+            Passenger.animator.CrossFade("Sit",.2f);
+            Passenger.transform.SetParent(Passenger.sitGridObject.transform);
+            Passenger.transform.rotation=Quaternion.identity;
+            Passenger.transform.DOLocalJump(Vector3.zero, 1, 1, .5f);
         }
     }
 }
