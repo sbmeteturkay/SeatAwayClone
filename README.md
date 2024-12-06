@@ -76,6 +76,8 @@ I needed to create a basic level data to get defined materials from one place an
 - fires an event when queue changes for ui
 
 
-##Demo
-https://github.com/user-attachments/assets/0e091bc5-13d2-4ed9-8dcb-185ea5165e13
+## Demo gif
+![Movie_003](https://github.com/user-attachments/assets/c65c796f-9eec-4f51-9cb1-88410689808c)
+
+
 
