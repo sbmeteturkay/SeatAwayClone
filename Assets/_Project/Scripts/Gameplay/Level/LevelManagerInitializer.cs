@@ -7,7 +7,7 @@ namespace SMTD.LevelSystem
 	/// <summary>
 	/// Initializer for the <see cref="LevelManager"/> component.
 	/// </summary>
-	internal sealed class LevelManagerInitializer : Initializer<LevelManager, GridSystem, PassengerManager,GridObjectsController>
+	internal sealed class LevelManagerInitializer : Initializer<LevelManager, GridSystem, PassengerManager,ColoredGridObjectsController>
 	{
 		#if UNITY_EDITOR
 		/// <summary>
@@ -23,7 +23,7 @@ namespace SMTD.LevelSystem
 		{
 			public GridSystem GridSystem = default;
 			public PassengerManager PassengerManager = default;
-			public GridObjectsController GridObjectsController = default;
+			public ColoredGridObjectsController GridObjectsController = default;
 		}
 		#endif
 	}

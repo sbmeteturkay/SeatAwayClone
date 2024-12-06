@@ -13,7 +13,7 @@ namespace SMTD.BusPassengerGame
     {
         public Renderer Renderer { get; set; }
         public Animator animator;
-        public GridObject sitGridObject;
+        private GridObject _sitGridObject;
         private DefinedColors _definedColor;
         private StateMachine _stateMachine;
         private bool _seated = false;
@@ -76,6 +76,15 @@ namespace SMTD.BusPassengerGame
             Renderer.material = material;
         }
 
+        public bool HasSeated()
+        {
+            return _sitGridObject != null;
+        }
+
+        public GridObject GetSeatedGridObject()
+        {
+            return _sitGridObject;
+        }
         public void OnNotify(PassengerManager passengerManager)
         {
             var gridSystem = passengerManager.GetGridSystem;
@@ -90,7 +99,7 @@ namespace SMTD.BusPassengerGame
                 if (path != null)
                 {
                     transform.DOKill();
-                    sitGridObject = seatGridObject;
+                    _sitGridObject = seatGridObject;
                     passengerManager.RemoveObserver(this);
                     passengerManager.QueueNextPassenger();
                     StartCoroutine(FollowPath(path,transform.gameObject));
@@ -159,7 +168,7 @@ namespace SMTD.BusPassengerGame
         {
             base.OnEnter();
             Passenger.animator.CrossFade("Sit",.2f);
-            Passenger.transform.SetParent(Passenger.sitGridObject.transform);
+            Passenger.transform.SetParent(Passenger.GetSeatedGridObject().transform);
             Passenger.transform.rotation=Quaternion.identity;
             Passenger.transform.DOLocalJump(Vector3.zero, 1, 1, .5f);
         }

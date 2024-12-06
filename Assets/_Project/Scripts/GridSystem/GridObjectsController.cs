@@ -10,7 +10,7 @@ namespace SMTD.Grid
     {
         [SerializeField] GridSystem gridSystem;
         [SerializeField] GridInput gridInput;
-        private List<GridObject> _gridObjects=new();
+        protected readonly List<GridObject> GridObjects=new();
         private IDraggable _selectedGridObject;
         private Dictionary<DefinedColors, Material> _materialDictionary = new();
         public static event Action<IDraggable> OnDragObjectMoved;
@@ -30,8 +30,13 @@ namespace SMTD.Grid
         
         private void Update()
         {
-            _selectedGridObject?.SetMovementLimitations(gridSystem.CheckGridObjectMovementLimitations(_selectedGridObject.CurrentCell(),_selectedGridObject.LocatedGridCell()));
-            _selectedGridObject?.OnDrag(gridSystem);
+            if (_selectedGridObject != null)
+            {
+                var selectedGridObjectCurrentCell = gridSystem.GetCellFromWorldPosition(_selectedGridObject.WorldPosition());
+                _selectedGridObject.SetMovementLimitations(gridSystem.CheckGridObjectMovementLimitations(selectedGridObjectCurrentCell,_selectedGridObject.LocatedGridCell()));
+                _selectedGridObject.OnDrag(gridInput.GetInputMapPosition(),selectedGridObjectCurrentCell.WorldPosition);
+            }
+
         }
         #endregion
         
@@ -40,7 +45,7 @@ namespace SMTD.Grid
         {
             var inputDownCell = gridSystem.GetCellFromGridPosition(gridSystem.Grid.WorldToCell(gridInput.GetInputMapPosition()));
             //check if clicked position has object 
-            foreach (var gridObject in _gridObjects)
+            foreach (var gridObject in GridObjects)
             {
                 if (gridObject.LocatedGridCell().CellPosition != inputDownCell.CellPosition) continue;
                 _selectedGridObject = gridObject;
@@ -51,13 +56,10 @@ namespace SMTD.Grid
         }
         private void GridInputOnGridInputCancelled()
         {
-            if (_selectedGridObject != null)
-            {
-                _selectedGridObject.OnRelease();
-                _selectedGridObject.OnGridChange -= SelectedGridObjectOnOnGridChange;
-                _selectedGridObject=null;
-            }
-
+            if (_selectedGridObject == null) return;
+            _selectedGridObject.OnRelease(gridSystem.GetCellFromWorldPosition(_selectedGridObject.WorldPosition()));
+            _selectedGridObject.OnGridChange -= SelectedGridObjectOnOnGridChange;
+            _selectedGridObject=null;
         }
         private void SelectedGridObjectOnOnGridChange()
         {
@@ -67,9 +69,8 @@ namespace SMTD.Grid
 
         public void AddGridObject(GridObject gridObject,Vector2Int gridCell)
         {
-            gridObject.Init(gridSystem.Grid, gridInput, gridSystem.GetCellFromGridPosition(new Vector3Int(gridCell.x, gridCell.y, 0)));
-            gridObject.SetMaterial(_materialDictionary[gridObject.GetColor()]);
-            _gridObjects.Add(gridObject);
+            gridObject.Init(gridSystem.GetCellFromGridPosition(new Vector3Int(gridCell.x, gridCell.y, 0)));
+            GridObjects.Add(gridObject);
         }
 
         public void Init(Dictionary<DefinedColors, Material> materialDictionary)
@@ -77,17 +78,10 @@ namespace SMTD.Grid
             _materialDictionary = materialDictionary;
         }
 
-        public DefinedColors GetGridObjectWithColor(IColorable colorable)
-        {
-            return _gridObjects.FirstOrDefault(x => x.GetColor() == colorable.GetColor()).GetColor();
-        }
-        public List<GridObject> GetGridObjectsWithColor(IColorable colorable)
-        {
-            return _gridObjects.FindAll(x => x.GetColor() == colorable.GetColor());
-        }
+
         public GridObject GetGridObject(Vector3Int gridPos)
         {
-            return _gridObjects.FirstOrDefault(x=>
+            return GridObjects.FirstOrDefault(x=>
                 x.LocatedGridCell().CellPosition == gridPos
                 );
         }

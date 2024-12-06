@@ -9,18 +9,18 @@ using UnityEngine;
 
 namespace SMTD.LevelSystem
 {
-    public class LevelManager : MonoBehaviour<GridSystem, PassengerManager, GridObjectsController>
+    public class LevelManager : MonoBehaviour<GridSystem, PassengerManager, ColoredGridObjectsController>
     {
         [SerializeField] LevelData levelData;
         PassengerManager _passengerManager;
-        GridObjectsController _gridObjectsController;
+        ColoredGridObjectsController _gridObjectsesController;
         GridSystem _gridSystem;
 
-        protected override void Init(GridSystem firstArgument, PassengerManager secondArgument, GridObjectsController controller)
+        protected override void Init(GridSystem firstArgument, PassengerManager secondArgument, ColoredGridObjectsController controller)
         {
             _gridSystem = firstArgument;
             _passengerManager = secondArgument;
-            _gridObjectsController = controller;
+            _gridObjectsesController = controller;
             _gridSystem.InitGrid(levelData.GridSize,levelData.CellSize);
 
         }
@@ -33,16 +33,17 @@ namespace SMTD.LevelSystem
 
         private void InitGridObjectsController()
         {
-            _gridObjectsController.Init(levelData.levelDesignData.materialDictionary);
+            _gridObjectsesController.Init(levelData.levelDesignData.materialDictionary);
             for (var x = 0; x < levelData.Grid.GetLength(0); x++)
             {
                 for (var y = 0; y < levelData.Grid.GetLength(1); y++)
                 {
                     var cell = levelData.Grid[x, y];
                     if (cell.DefinedColors == null) continue;
-                    var seat = levelData.levelDesignData.seatModel.Request<GridObject>();
+                    var seat = levelData.levelDesignData.seatModel.Request<ColoredGridObject>();
                     seat.SetColor((DefinedColors)cell.DefinedColors);
-                    _gridObjectsController.AddGridObject(seat,new Vector2Int(x,y));
+                    seat.SetMaterial(levelData.levelDesignData.materialDictionary[seat.GetColor()]);
+                    _gridObjectsesController.AddGridObject(seat,new Vector2Int(x,y));
                 }
             }
 
@@ -57,7 +58,7 @@ namespace SMTD.LevelSystem
                 passenger.SetColor(passengerColor);
                 passengers.Add(passenger);
             }
-            _passengerManager.Initialize(passengers,_gridSystem,levelData.levelDesignData.materialDictionary,_gridObjectsController);
+            _passengerManager.Initialize(passengers,_gridSystem,levelData.levelDesignData.materialDictionary,_gridObjectsesController);
         }
     }
 

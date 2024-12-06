@@ -6,10 +6,10 @@ namespace SMTD.Grid
     public interface IDraggable
     {
         void OnPick();
-        void OnRelease();
-        void OnDrag(GridSystem gridSystem);
+        void OnRelease(GridCell cell);
+        void OnDrag(Vector3 inputPosition,Vector3 currentCellWorldPosition);
+        Vector3 WorldPosition();
         GridCell LocatedGridCell();
-        GridCell CurrentCell();
         void SetMovementLimitations(MovementLimitations movementLimitations);
         event Action OnGridChange;
     }

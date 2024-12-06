@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
 using Pancake.Pattern;
 using Sisus.Init;
 using SMTD.Grid;
@@ -16,14 +15,14 @@ namespace SMTD.BusPassengerGame
         private List<Passenger> _passengers;
         private GridSystem _gridSystem;
         private Dictionary<DefinedColors, Material> _materialDictionary;
-        private GridObjectsController _gridObjectsController;
+        private ColoredGridObjectsController _gridObjectsController;
         public static event Action<List<Passenger>> OnPassengerUpdate;
 
-        public void Initialize(List<Passenger> passengers, GridSystem gridSystem, Dictionary<DefinedColors, Material> materialDictionary,GridObjectsController gridObjectController)
+        public void Initialize(List<Passenger> passengers, GridSystem gridSystem, Dictionary<DefinedColors, Material> materialDictionary,ColoredGridObjectsController gridObjectsController)
         {
             _gridSystem = gridSystem;
             _materialDictionary= materialDictionary;
-            _gridObjectsController = gridObjectController;
+            _gridObjectsController = gridObjectsController;
             CreatePassengers(passengers);
             GridObjectsController.OnDragObjectMoved+= GridManagerOnOnDragObjectMoved;
         }
@@ -58,12 +57,12 @@ namespace SMTD.BusPassengerGame
         private void LineUpPassengers(bool smooth=false)
         {
             var topRightCell =_gridSystem.GetCellFromGridPosition(new Vector3Int(_gridSystem.GridSize.x - 1, _gridSystem.GridSize.y - 1, 0));
-            var onQueuePassengers = _passengers.FindAll(x => x.sitGridObject == null);
+            var onQueuePassengers = _passengers.FindAll(x => !x.HasSeated());
             for (var index = 0; index < onQueuePassengers.Count; index++)
             {
                 var passenger = onQueuePassengers[index];
                 //to line up passengers from 1 grid right from right edge
-                passenger.Move(topRightCell.WorldPosition+new Vector3(1.5f*_gridSystem.CellSize.x,0,-index),true);
+                passenger.Move(topRightCell.WorldPosition+new Vector3(1.5f*_gridSystem.CellSize.x,0,-index),smooth);
             }
             OnPassengerUpdate?.Invoke(_passengers);
         }
@@ -73,11 +72,11 @@ namespace SMTD.BusPassengerGame
         }
 
         public GridSystem GetGridSystem => _gridSystem;
-        public GridObjectsController GetGridObjectsController => _gridObjectsController;
+        public ColoredGridObjectsController GetGridObjectsController => _gridObjectsController;
 
         public void QueueNextPassenger()
         {
-            var nextPassenger=_passengers.FirstOrDefault(x => x.sitGridObject == null);
+            var nextPassenger=_passengers.FirstOrDefault(x => !x.HasSeated());
             if (nextPassenger != null)
             {
                 AddObserverPassenger(nextPassenger);
@@ -88,10 +87,10 @@ namespace SMTD.BusPassengerGame
 
         public bool HasPassengerOnObject(GridObject gridObject)
         {
-            var sittingPassengers=_passengers.FindAll(x => x.sitGridObject !=null);
+            var sittingPassengers=_passengers.FindAll(x => x.HasSeated());
             foreach (var passenger in sittingPassengers)
             {
-                var hasPassenger = passenger.sitGridObject.LocatedGridCell().CellPosition ==
+                var hasPassenger = passenger.GetSeatedGridObject().LocatedGridCell().CellPosition ==
                                    gridObject.LocatedGridCell().CellPosition;
                 if (hasPassenger)
                     return true;

@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Sisus.Init;
 using UnityEngine;
 
 namespace SMTD.Grid
@@ -76,6 +74,10 @@ namespace SMTD.Grid
         public GridCell GetCellFromGridPosition(Vector3Int gridPosition)
         {
             return _cells.GetValueOrDefault(gridPosition,_emptyCell);
+        }
+        public GridCell GetCellFromWorldPosition(Vector3 worldPosition)
+        {
+            return GetCellFromGridPosition(grid.WorldToCell(worldPosition));
         }
     }
 }

@@ -26,9 +26,9 @@ namespace SMTD.BusPassengerGame.UI
 
         private void PassengerManagerOnOnPassengerUpdate(List<Passenger> obj)
         {
-            red.text = obj.FindAll(x => x.GetColor() == DefinedColors.Red&&x.sitGridObject==null).Count.ToString();
-            blue.text = obj.FindAll(x => x.GetColor() == DefinedColors.Blue&&x.sitGridObject==null).Count.ToString();
-            orange.text = obj.FindAll(x => x.GetColor() == DefinedColors.Orange&&x.sitGridObject==null).Count.ToString();
+            red.text = obj.FindAll(x => x.GetColor() == DefinedColors.Red&&!x.HasSeated()).Count.ToString();
+            blue.text = obj.FindAll(x => x.GetColor() == DefinedColors.Blue&&!x.HasSeated()).Count.ToString();
+            orange.text = obj.FindAll(x => x.GetColor() == DefinedColors.Orange&&!x.HasSeated()).Count.ToString();
         }
 
     }
