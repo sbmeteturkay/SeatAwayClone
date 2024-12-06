@@ -52,8 +52,13 @@ namespace SMTD.BusPassengerGame
         {
             return _findSeat;
         }
-        public void Move(Vector3 position)
+        public void Move(Vector3 position,bool smooth=false)
         {
+            if (smooth)
+            {
+                transform.DOMove(position,0.5f);
+                return;
+            }
             transform.position = position;
         }
         public DefinedColors GetColor()
@@ -75,19 +80,17 @@ namespace SMTD.BusPassengerGame
         {
             var gridSystem = passengerManager.GetGridSystem;
             GridCell startCell =gridSystem.GetCell(new Vector3Int(gridSystem.GridSize.x-1, gridSystem.GridSize.y - 1, 0)); // Sağ üst hücre
-            
-            foreach (var gridObject in passengerManager.GetGridObjectsController.GetGridObjectsWithColor(this))
+            foreach (var seatGridObject in passengerManager.GetGridObjectsController.GetGridObjectsWithColor(this))
             {
-                GridCell seatCell = gridObject.LocatedGridCell();
-                if(passengerManager.HasPassengerOnObject(seatCell))
-                    continue;
-                
-                GridCell targetCell = gridSystem.GetCellFromGridPosition(gridObject.LocatedGridCell().CellPosition + Vector3Int.up);
+                GridCell seatCell = seatGridObject.LocatedGridCell();
+                if (passengerManager.HasPassengerOnObject(seatGridObject)) continue;
+                GridCell targetCell = gridSystem.GetCellFromGridPosition(seatCell.CellPosition + Vector3Int.up);
                 
                 List<GridCell> path = PathFinder.FindPath(startCell,targetCell , gridSystem);
                 if (path != null)
                 {
-                    sitGridObject = gridObject;
+                    transform.DOKill();
+                    sitGridObject = seatGridObject;
                     passengerManager.RemoveObserver(this);
                     passengerManager.QueueNextPassenger();
                     StartCoroutine(FollowPath(path,transform.gameObject));

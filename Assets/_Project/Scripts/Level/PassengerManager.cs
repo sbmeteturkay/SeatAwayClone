@@ -34,7 +34,7 @@ namespace SMTD.BusPassengerGame
         private void CreatePassengers(List<Passenger> passengers)
         {
             _passengers=passengers;
-            LineUpPassengers();
+            LineUpPassengers(false);
             SetColorMaterialsOfPassengers(); 
             AddObserverPassenger(0);
         }
@@ -55,17 +55,17 @@ namespace SMTD.BusPassengerGame
                 passenger.SetMaterial(_materialDictionary[passenger.GetColor()]);
             }
         }
-        private void LineUpPassengers()
+        private void LineUpPassengers(bool smooth=false)
         {
-            var topRightCell =
-                _gridSystem.GetCellFromGridPosition(new Vector3Int(_gridSystem.GridSize.x - 1, _gridSystem.GridSize.y - 1, 0));
-            for (var index = 0; index < _passengers.Count; index++)
+            var topRightCell =_gridSystem.GetCellFromGridPosition(new Vector3Int(_gridSystem.GridSize.x - 1, _gridSystem.GridSize.y - 1, 0));
+            var onQueuePassengers = _passengers.FindAll(x => x.sitGridObject == null);
+            for (var index = 0; index < onQueuePassengers.Count; index++)
             {
-                var passenger = _passengers[index];
-                
+                var passenger = onQueuePassengers[index];
                 //to line up passengers from 1 grid right from right edge
-                passenger.Move(topRightCell.WorldPosition+new Vector3(1.5f*_gridSystem.CellSize.x,0,-index));
+                passenger.Move(topRightCell.WorldPosition+new Vector3(1.5f*_gridSystem.CellSize.x,0,-index),true);
             }
+            OnPassengerUpdate?.Invoke(_passengers);
         }
         private void GridManagerOnOnDragObjectMoved(IDraggable obj)
         {
@@ -78,18 +78,23 @@ namespace SMTD.BusPassengerGame
         public void QueueNextPassenger()
         {
             var nextPassenger=_passengers.FirstOrDefault(x => x.sitGridObject == null);
-            if(nextPassenger!=null)
+            if (nextPassenger != null)
+            {
                 AddObserverPassenger(nextPassenger);
-            OnPassengerUpdate?.Invoke(_passengers);
+                LineUpPassengers(true);
+                Notify(this);
+            }
         }
 
-        public bool HasPassengerOnObject(GridCell cell)
+        public bool HasPassengerOnObject(GridObject gridObject)
         {
-            foreach (var passenger in _passengers)
+            var sittingPassengers=_passengers.FindAll(x => x.sitGridObject !=null);
+            foreach (var passenger in sittingPassengers)
             {
-                if (passenger.sitGridObject == null)
-                    continue;
-                return passenger.sitGridObject==_gridObjectsController.GetGridObject(cell.CellPosition);
+                var hasPassenger = passenger.sitGridObject.LocatedGridCell().CellPosition ==
+                                   gridObject.LocatedGridCell().CellPosition;
+                if (hasPassenger)
+                    return true;
             }
             return false;
         }
